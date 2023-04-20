@@ -1,4 +1,4 @@
-#include "Priority_queue.hpp"
+#include "Priority_queue.cpp"
 
 
 int main(){
