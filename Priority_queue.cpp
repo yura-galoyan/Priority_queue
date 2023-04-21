@@ -14,12 +14,13 @@ public:
     using reference = Container::reference;
     using const_reference = Container::const_reference;
 
+public:
     Priority_queue() = default;
     
-    Priority_queue( const Priority_queue& other ):container(other) ;
+    Priority_queue( const Priority_queue& other ):container(other){} ;
  
     template<typename Container>
-    Priority_queue(const Container& container): container(container) ;
+    Priority_queue(const Container& container): container(container){} ;
 
     template<typename InputIt>
     Priority_queue( InputIt first, InputIt last, Compare cmp = Compare{}, const Container& c = Container{} )
@@ -27,6 +28,7 @@ public:
     {
         container.insert(  std::end(container), first, last );
     };
+
 
 
     void pop(){
@@ -37,21 +39,14 @@ public:
 
     void push(const value_type& elem){
         container.push_back(elem);
-
-    
-/*HEAP-INCREASE-KEY.A; i; key/
-1 if key < A[i]
-2 error “new key is smaller than current key”
-3 A[i] = key
-4 while i > 1 and A[PARENT(i)] < A[i]
-5 exchange A[i] with A[PARENT(i)]
-6 i = PARENT.i /*/
-
-
-        
+        increaseKey( container, std::end(container),elem  );
     };
+
     void emplace();
-    bool empty();
+
+    bool empty(){
+        return container.empty();
+    };
     
     const_reference top()const{
         return container.front();
@@ -59,9 +54,10 @@ public:
     std::size_t size() const{
         return container.size();
     };
-    void swap();
 
-    ~Priority_queue();
+    void swap(Priority_queue& other){
+
+    };
     
 private: 
     template <typename RandIt>
@@ -70,6 +66,13 @@ private:
         const auto index = std::distance(first, it);
         const auto childIndex = 2*index + childId;
         return childIndex >= std::distance(first, last) ? last : std::next(first, childIndex);
+    }
+
+    template <typename RandIt>
+    RandIt getParent(RandIt first, RandIt it) {
+        const auto index = std::distance(first, it);
+        const auto parentIndex = index/2;
+        return std::next(first, parentIndex);
     }
 
     template <typename RandIt> 
@@ -93,7 +96,7 @@ private:
         }
         if (largest != i) {
             std::swap(*largest, *i);
-            maxHeapify(first, last, largest);
+            heapify(first, last, largest);
         }
     }
 
@@ -108,7 +111,10 @@ private:
     template<typename RandIt>
     void increaseKey(Container container,RandIt it,const value_type key ){
         *it = key;
-        while( it != )
+        while( it != std::begin(container) && *getParent(std::begin(container),it) < *it){
+            std::swap( *it,*getParent(std::begin(container),it)  );
+            it = getParent(std::begin(container),it);
+        }
     }
 
 
