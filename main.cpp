@@ -12,7 +12,14 @@ void print(  Priority_queue<int> pq  ){
 
 int main(){
     std::vector<int> a{5,10,6,17,9};
-    Priority_queue<int> pq( std::begin(a),std::end(a)  );
+    Priority_queue<int> pq (a.begin(), a.end());
+
+    Priority_queue<int> pq1 (a.begin(), a.end());
+    Priority_queue<int> pq2 (a);
+    Priority_queue<int> pq3 ({5,10,6,17,9});
+    Priority_queue<int> pq4 {5,10,6,17,9};
+    Priority_queue<int> pq5;
+
 
 
     std::cout<< "size = " <<pq.size()<<std::endl;

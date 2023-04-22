@@ -29,7 +29,7 @@ public:
 
     //initializer list initialization
     Priority_queue(const std::initializer_list<T>& list){
-        container.insert(list.end(), list);
+        container.insert(container.end(), list);
         build_heap(std::begin(container),std::end(container));
     };
 
@@ -69,9 +69,8 @@ public:
     };
 
     void swap(Priority_queue& other){
-        auto temp = other.container;
-        other.container = container;
-        container = temp;
+        std::swap(container, other.container);
+        std::swap(comp, other.comp);
     };
     
 private: 
