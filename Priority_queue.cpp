@@ -8,38 +8,51 @@ template<typename T, typename Container = std::vector<T>,  typename Compare = st
 class Priority_queue
 {
 public:
-    using value_type = Container::value_type;
+    using const_reference = typename Container::const_reference;
+    using reference = typename Container::reference;
+    using value_type = typename Container::value_type;
+    using size_type = typename Container::size_type;
     using container_type = Container;
-    using size_type = Container::size_type;
-    using reference = Container::reference;
-    using const_reference = Container::const_reference;
+    using value_compare = Compare;
 
 public:
     Priority_queue() = default;
-    
-    Priority_queue( const Priority_queue& other ):container(other){} ;
- 
-    template<typename Container>
-    Priority_queue(const Container& container): container(container){} ;
 
+    //copy constructor
+    Priority_queue( const Priority_queue& other ){
+        container = other.container;
+        comp = other.comp;
+    };
+
+    //container initialization
+    Priority_queue(const Container& container): container(container){};
+
+    //initializer list initialization
+    Priority_queue(const std::initializer_list<T>& list){
+        container.insert(list.end(), list);
+        build_heap(std::begin(container),std::end(container));
+    };
+
+    //range initialization
     template<typename InputIt>
     Priority_queue( InputIt first, InputIt last, Compare cmp = Compare{}, const Container& c = Container{} )
     : container(c), comp(cmp)
-    {
+    {        
         container.insert(  std::end(container), first, last );
+        build_heap(std::begin(container), std::end(container));
     };
 
 
 
     void pop(){
-        std::begin(container) = std::prev( std::end(container) );
+        *std::begin(container) = *std::prev( std::end(container) );
         container.pop_back();
         heapify(std::begin(container),  std::end(container), std::begin(container));
     };
 
     void push(const value_type& elem){
         container.push_back(elem);
-        increaseKey( container, std::end(container),elem  );
+        increaseKey( std::begin(container), std::prev( std::end(container) ),elem  );
     };
 
     void emplace();
@@ -56,7 +69,9 @@ public:
     };
 
     void swap(Priority_queue& other){
-
+        auto temp = other.container;
+        other.container = container;
+        container = temp;
     };
     
 private: 
@@ -71,7 +86,7 @@ private:
     template <typename RandIt>
     RandIt getParent(RandIt first, RandIt it) {
         const auto index = std::distance(first, it);
-        const auto parentIndex = index/2;
+        const auto parentIndex = (index - 1)/2 ;
         return std::next(first, parentIndex);
     }
 
@@ -105,27 +120,19 @@ private:
         const auto size = std::distance(first, last);
         const auto firstNonLeaf = size/2 - 1;
         for (auto i = firstNonLeaf + 1; i >= 1; --i) {
-            maxHeapify(first, last, std::next(first, i));
+            heapify(first, last, std::next(first, i - 1));
         }
     }
+
     template<typename RandIt>
-    void increaseKey(Container container,RandIt it,const value_type key ){
+    void increaseKey(RandIt first, RandIt it,const value_type key ){
         *it = key;
-        while( it != std::begin(container) && *getParent(std::begin(container),it) < *it){
-            std::swap( *it,*getParent(std::begin(container),it)  );
-            it = getParent(std::begin(container),it);
+        while( it != first && *getParent(first,it) < *it){
+            auto tempP = getParent(first,it);
+            std::swap( *it,*getParent(first,it)  );
+            it = getParent(first,it);
         }
     }
-
-
-    /*HEAP-INCREASE-KEY.A; i; key/
-1 if key < A[i]
-2 error “new key is smaller than current key”
-3 A[i] = key
-4 while i > 1 and A[PARENT(i)] < A[i]
-5 exchange A[i] with A[PARENT(i)]
-6 i = PARENT.i /*/
-
 
 
 private:
