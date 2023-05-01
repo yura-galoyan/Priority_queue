@@ -18,20 +18,24 @@ public:
 public:
     priority_queue() = default;
 
-    priority_queue( const priority_queue& other );
+    priority_queue( const Compare& compare )
+        : priority_queue(compare, Container()) { }
+
+    priority_queue( const Compare& compare, const Container& cont );
 
     priority_queue(const Container& container);
 
     priority_queue(const std::initializer_list<T>& list);
 
     template<typename InputIt >
-    priority_queue( InputIt first, InputIt last, Compare cmp = Compare{}, const Container& c = Container{} );
+    priority_queue( InputIt first, InputIt last, const Compare& cmp = Compare{}, const Container& c = Container{} );
 
     void pop();
 
     void push(const value_type& elem);
 
-    void emplace();
+    template< class... Args >
+    void emplace( Args&&... args );
 
     inline bool empty(){ return container.empty(); };
     
@@ -40,8 +44,7 @@ public:
     inline std::size_t size() const{ return container.size(); };
 
     void swap(priority_queue& other);
-    
-private: 
+ 
 private:
     Container container;
     Compare comp;

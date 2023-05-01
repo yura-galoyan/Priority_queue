@@ -13,11 +13,10 @@ void print(  priority_queue<int> pq  ){
 
 int main(){
     
-    priority_queue<int> pq1{1,2,3,4,5};
+    priority_queue<int> cp{10,4,5,1,2};
 
+    std::cout<<std::endl;
 
-    print(pq1);
-
-
+    cp.emplace(7);
     return 0;
 }
