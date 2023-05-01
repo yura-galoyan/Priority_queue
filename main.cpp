@@ -13,14 +13,11 @@ void print(  priority_queue<int> pq  ){
 
 int main(){
     
-        std::vector<int> a{1,2,3,4,5};
-
-    priority_queue<int> b;
-
-    priority_queue<int> pq( a.begin(), a.end());
+    priority_queue<int> pq1{1,2,3,4,5};
 
 
-    print(pq);
+    print(pq1);
+
 
     return 0;
 }

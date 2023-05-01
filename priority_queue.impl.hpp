@@ -15,13 +15,14 @@ priority_queue<T, Container, Compare>::priority_queue( const priority_queue& oth
 
 
 template<typename T, typename Container,  typename Compare>
-priority_queue<T, Container, Compare>::priority_queue(const Container& container): container(container){
-
+priority_queue<T, Container, Compare>::priority_queue(const Container& other): container(other){
+    container.insert(  std::end(container), other );
+    heap::build_heap(std::begin(container), std::end(container));
 };
 
 template<typename T, typename Container,  typename Compare>
 template<typename InputIt>
-priority_queue<T, Container, Compare>::priority_queue( InputIt first, InputIt last, Compare cmp , const Container& c  ){   
+priority_queue<T, Container, Compare>::priority_queue( InputIt first, InputIt last, Compare cmp , const Container& container  ){   
     container.insert(  std::end(container), first, last );
     heap::build_heap(std::begin(container), std::end(container));
 };
