@@ -1,8 +1,9 @@
-#include "Priority_queue.cpp"
+#include "Priority_queue.hpp"
 #include <iterator>
 #include <iostream>
+#include <algorithm>
 
-void print(  Priority_queue<int> pq  ){
+void print(  priority_queue<int> pq  ){
     while(!pq.empty()){
         std::cout<<pq.top()<<std::endl;
         pq.pop();
@@ -11,30 +12,15 @@ void print(  Priority_queue<int> pq  ){
 }
 
 int main(){
-    std::vector<int> a{5,10,6,17,9};
-    Priority_queue<int> pq (a.begin(), a.end());
+    
+        std::vector<int> a{1,2,3,4,5};
 
-    Priority_queue<int> pq1 (a.begin(), a.end());
-    Priority_queue<int> pq2 (a);
-    Priority_queue<int> pq3 ({5,10,6,17,9});
-    Priority_queue<int> pq4 {5,10,6,17,9};
-    Priority_queue<int> pq5;
+    priority_queue<int> b;
 
+    priority_queue<int> pq( a.begin(), a.end());
 
-
-    std::cout<< "size = " <<pq.size()<<std::endl;
-    std::cout<< "17 = " <<pq.top()<<std::endl;
-    pq.pop();
-    std::cout<< "10 = " <<pq.top()<<std::endl;
-    pq.push(50);
-    std::cout<< "50 = " <<pq.top()<<std::endl;
-    if(!pq.empty()){
-        std::cout<<"pq is not empty"<<std::endl;
-    }
 
     print(pq);
-    
-
 
     return 0;
 }
