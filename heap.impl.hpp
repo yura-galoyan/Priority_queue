@@ -1,5 +1,5 @@
 #include "heap.hpp"
-
+#include <functional>
 template <typename RandIt>
 RandIt heap::getChild(RandIt first, RandIt last, RandIt it,
                       typename std::iterator_traits<RandIt>::difference_type childId) {
@@ -25,13 +25,13 @@ RandIt heap::getRight(RandIt first, RandIt last, RandIt i) {
     return getChild(first, last, i, 2);
 }
 
-template <typename RandIt>
-void heap::heapify(RandIt first, RandIt last, RandIt i) {
+template <typename RandIt, typename Comp >
+void heap::heapify(RandIt first, RandIt last, RandIt i, Comp comp ) {
     auto largest = i;
-    if(const auto l = getLeft(first, last, i); l != last &&  *l > *largest) {
+    if(const auto l = getLeft(first, last, i); l != last &&  !comp(*l,*largest)) {
         largest = l;
     }
-    if (const auto r = getRight(first, last, i); r != last && *r > *largest) {
+    if (const auto r = getRight(first, last, i); r != last && !comp(*r, *largest)) {
         largest = r;
     }
     if (largest != i) {
@@ -40,19 +40,19 @@ void heap::heapify(RandIt first, RandIt last, RandIt i) {
     }
 }
 
-template <typename RandIt>
-void heap::build_heap(RandIt first, RandIt last) {
+template <typename RandIt, typename Comp>
+void heap::build_heap(RandIt first, RandIt last, Comp comp  ) {
     const auto size = std::distance(first, last);
     const auto firstNonLeaf = size/2 - 1;
     for (auto i = firstNonLeaf + 1; i >= 1; --i) {
-        heapify(first, last, std::next(first, i - 1));
+        heapify(first, last, std::next(first, i - 1),comp);
     }
 }
 
-template<typename T, typename RandIt>
-void heap::increaseKey(RandIt first, RandIt it,const T key ){
+template<typename T, typename RandIt, typename Comp >
+void heap::increaseKey(RandIt first, RandIt it,const T key, Comp comp  ){
     *it = key;
-    while( it != first && *getParent(first,it) < *it){
+    while( it != first &&  comp(*getParent(first,it), *it) ){
         auto tempP = getParent(first,it);
         std::swap( *it,*getParent(first,it)  );
         it = getParent(first,it);

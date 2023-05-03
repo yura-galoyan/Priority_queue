@@ -30,6 +30,9 @@ public:
     template<typename InputIt >
     priority_queue( InputIt first, InputIt last, const Compare& cmp = Compare{}, const Container& c = Container{} );
 
+    template<typename InputIt >
+    priority_queue( InputIt first, InputIt last, const Compare& cmp = Compare{} );
+
     void pop();
 
     void push(const value_type& elem);

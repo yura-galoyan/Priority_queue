@@ -18,14 +18,14 @@ RandIt getLeft(RandIt first, RandIt last, RandIt i);
 template <typename RandIt> 
 RandIt getRight(RandIt first, RandIt last, RandIt i);
 
-template <typename RandIt>
-void heapify(RandIt first, RandIt last, RandIt i);
+template <typename RandIt, typename Comp = std::less<typename RandIt::value_type>>
+void heapify(RandIt first, RandIt last, RandIt i, Comp comp = Comp{} );
 
-template <typename RandIt>
-void build_heap(RandIt first, RandIt last);
+template <typename RandIt, typename Comp = std::less<typename RandIt::value_type> > 
+void build_heap(RandIt first, RandIt last, Comp comp = Comp{}  );
 
-template<typename T, typename RandIt>
-void increaseKey(RandIt first, RandIt it,const T key );
+template<typename T, typename RandIt, typename Comp = std::less<T> >
+void increaseKey(RandIt first, RandIt it,const T key, Comp comp = Comp{} );
 
 #include "heap.impl.hpp"
 

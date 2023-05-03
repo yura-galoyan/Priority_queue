@@ -3,7 +3,8 @@
 #include <iostream>
 #include <algorithm>
 
-void print(  priority_queue<int> pq  ){
+template<typename Priority_queue_t>
+void print( Priority_queue_t pq  ){
     while(!pq.empty()){
         std::cout<<pq.top()<<std::endl;
         pq.pop();
@@ -13,10 +14,11 @@ void print(  priority_queue<int> pq  ){
 
 int main(){
     
-    priority_queue<int> cp{10,4,5,1,2};
+    priority_queue<int,std::vector<int>, std::greater<int> > pq1{1,2,3,4,5};
 
-    std::cout<<std::endl;
 
-    cp.emplace(7);
+    print(pq1);
+
+
     return 0;
 }
