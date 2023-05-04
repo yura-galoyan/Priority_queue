@@ -8,12 +8,18 @@ priority_queue<T, Container, Compare>::priority_queue(const std::initializer_lis
     heap::build_heap(std::begin(container),std::end(container), comp);
 };
 
+
+
 template<typename T, typename Container, typename Compare>
 priority_queue<T,Container,Compare>::priority_queue( const Compare& cmp, const Container& cont )
     :comp(cmp),container(cont)
 {
     heap::build_heap(std::begin(container), std::end(container),comp);
 };
+
+template<typename Container, typename Compare>
+priority_queue( const Compare& cmp, const Container& cont )->priority_queue<typename Container::value_type, Container, Compare>;
+
 
 template<typename T, typename Container,  typename Compare>
 priority_queue<T, Container, Compare>::priority_queue(const Container& other)
@@ -22,21 +28,37 @@ priority_queue<T, Container, Compare>::priority_queue(const Container& other)
     heap::build_heap(std::begin(container), std::end(container),comp);
 };
 
+
+
 template<typename T, typename Container,  typename Compare>
 template<typename InputIt>
-priority_queue<T, Container, Compare>::priority_queue( InputIt first, InputIt last,const Compare& cmp , const Container& container  )
-:container(other.begin(), other.end())
+priority_queue<T, Container, Compare>::priority_queue( InputIt first, InputIt last,const Container& container, const Compare& cmp )
+:container(first,last)
 {
     heap::build_heap(std::begin(container), std::end(container),comp );
 };
 
-template<typename T, typename Container,  typename Compare>
-template<typename InputIt>
-priority_queue<T, Container, Compare>::priority_queue( InputIt first, InputIt last,const Compare& cmp  )
-:container(other.begin(), other.end())
-{
-    heap::build_heap(std::begin(container), std::end(container),comp );
-};
+template<typename InputIt,typename Container,typename Compare >
+priority_queue( InputIt first, InputIt last, const Container& container,
+ const Compare& cmp  )->priority_queue<typename std::iterator_traits<InputIt>::value_type,Container,Compare >;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 template<typename T, typename Container,  typename Compare>
 void priority_queue<T, Container, Compare>::pop(){

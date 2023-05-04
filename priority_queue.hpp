@@ -28,10 +28,8 @@ public:
     priority_queue(const std::initializer_list<T>& list);
 
     template<typename InputIt >
-    priority_queue( InputIt first, InputIt last, const Compare& cmp = Compare{}, const Container& c = Container{} );
-
-    template<typename InputIt >
-    priority_queue( InputIt first, InputIt last, const Compare& cmp = Compare{} );
+    priority_queue( InputIt first, InputIt last,const Container& container = Container{}, 
+                        const Compare& cmp = std::less< typename std::iterator_traits<InputIt>::value_type>{} );
 
     void pop();
 

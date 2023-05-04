@@ -14,11 +14,20 @@ void print( Priority_queue_t pq  ){
 
 int main(){
     
-    priority_queue<int,std::vector<int>, std::greater<int> > pq1{1,2,3,4,5};
+    std::vector<int> data{1,2,3,4};
 
 
-    print(pq1);
+
+    priority_queue cp( data.begin(), data.end());
 
 
+
+    std::cout<<std::endl;
+
+    cp.top();
+
+
+    cp.emplace(7);
     return 0;
+
 }
